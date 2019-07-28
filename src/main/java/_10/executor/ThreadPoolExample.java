@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class ThreadPoolExample {
-    
+
     final static class MyTask implements Runnable {
         private int taskId;
 
@@ -27,15 +27,15 @@ public class ThreadPoolExample {
             System.out.println("Uncaught exception");
         }
     }
-	
-	public static void main(String args[]) throws InterruptedException {
-		//ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
-	    ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 10000, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>(10));
-		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-//		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
-//		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
-//		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardOldestPolicy());
-		
+
+    public static void main(String args[]) throws InterruptedException {
+        // ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 10000, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>(10));
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        // executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        // executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
+        // executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardOldestPolicy());
+
         final MyHandler eh = new MyHandler();
 
         ThreadFactory threadFactory = new ThreadFactory() {
@@ -64,5 +64,5 @@ public class ThreadPoolExample {
         System.out.println("TaskCount: " + executor.getTaskCount());
         System.out.println("isShutdown: " + executor.isShutdown());
         System.out.println("isTerminated: " + executor.isTerminated());
-	}
+    }
 }

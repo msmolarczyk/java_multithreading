@@ -5,11 +5,13 @@ import java.util.concurrent.locks.ReentrantLock;
 public class BlockedVsWaiting {
 
     public static void main(String[] args) throws InterruptedException {
-        waitingState();
-        blockedState();
+        System.out.println("---------------------\nLock:");
+        lockExample();
+        System.out.println("---------------------\nSynchronized:");
+        synchronizedExample();
     }
 
-    private static void waitingState() throws InterruptedException {
+    private static void lockExample() throws InterruptedException {
         final ReentrantLock lock = new ReentrantLock();
 
         Thread thread = new Thread(new Runnable() {
@@ -28,9 +30,12 @@ public class BlockedVsWaiting {
         Thread.sleep(1000);
         System.out.println(thread.getState());
         thread.interrupt();
+
+        Thread.sleep(1000);
+        System.out.println(thread.getState());
     }
 
-    private static void blockedState() throws InterruptedException {
+    private static void synchronizedExample() throws InterruptedException {
         final Object object = new Object();
 
         Thread thread = new Thread(new Runnable() {
@@ -44,6 +49,9 @@ public class BlockedVsWaiting {
             Thread.sleep(1000);
             System.out.println(thread.getState());
             thread.interrupt();
+
+            Thread.sleep(1000);
+            System.out.println(thread.getState());
         }
     }
 }

@@ -33,8 +33,7 @@ public class ReentrantLockingTimeoutDemo {
                             }
                             break;
                         } else {
-                            System.out.println(
-                                    "unable to lock thread " + Thread.currentThread().getName() + " will re try again");
+                            System.out.println("unable to lock thread " + Thread.currentThread().getName() + " will re try again");
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();

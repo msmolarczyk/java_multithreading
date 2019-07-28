@@ -1,49 +1,15 @@
 package _03.explicit.locks;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
-
-public class ProducerConsumerReantrantLock {
-
+public class ProducerConsumerTemplate {
     private static class Item {
-        private int contents;
-        private boolean available = false;
+        private int content;
 
-        private ReentrantLock lock = new ReentrantLock();
-        private Condition condition = lock.newCondition();
-
-        public int get() {
-            lock.lock();
-            try {
-                while (available == false) {
-                    try {
-                        condition.await();
-                    } catch (InterruptedException e) {
-                    }
-                }
-                available = false;
-                condition.signal();
-                return contents;
-            } finally {
-                lock.unlock();
-            }
+        public synchronized int get() {
+            return content;
         }
 
-        public void put(int value) {
-            lock.lock();
-            try {
-                while (available == true) {
-                    try {
-                        condition.await();
-                    } catch (InterruptedException e) {
-                    }
-                }
-                contents = value;
-                available = true;
-                condition.signal();
-            } finally {
-                lock.unlock();
-            }
+        public synchronized void put(int value) {
+            content = value;
         }
     }
 

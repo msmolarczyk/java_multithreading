@@ -53,7 +53,7 @@ public class WorkersExample {
         }
         executor.shutdown();
         executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
-//        printStatus((ThreadPoolExecutor) executor);
+        printStatus((ThreadPoolExecutor) executor);
     }
 
     public static void printStatus(ThreadPoolExecutor executor) {

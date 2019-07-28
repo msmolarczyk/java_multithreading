@@ -6,35 +6,30 @@ import java.util.concurrent.TransferQueue;
 
 public class TransferQueueExample {
 
-	public static void main(String[] args) throws InterruptedException {
-		final TransferQueue<String> transfer = new LinkedTransferQueue<String>();
-		//transfer.transfer("Hello"); //Wait for a consumer
+    public static void main(String[] args) throws InterruptedException {
+        final TransferQueue<String> transfer = new LinkedTransferQueue<String>();
+        // transfer.transfer("Hello"); //Wait for a consumer
 
-		new Thread(		new Runnable(){
+        new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					transfer.take();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-		}).start();
-		Thread.sleep(1000);
-		if(transfer.tryTransfer("World")){//Don't wait for a consumer
-		    System.out.println("The element has been transfered to a consumer");
-		} else {
-			System.out.println("There were no waiting consumer. The element has not been enqueued.");
-		}
+            @Override
+            public void run() {
+                try {
+                    transfer.take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
+        }).start();
+        Thread.sleep(1000);
+        if (transfer.tryTransfer("World")) {// Don't wait for a consumer
+            System.out.println("The element has been transfered to a consumer");
+        } else {
+            System.out.println("There were no waiting consumer. The element has not been enqueued.");
+        }
 
+        // boolean transfered = transfer.tryTransfer("Goodbye", 5, TimeUnit.SECONDS);
 
-		//boolean transfered = transfer.tryTransfer("Goodbye", 5, TimeUnit.SECONDS);
-
-
-	}
+    }
 }

@@ -6,9 +6,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-// TODO - przerobic na slownik
-
-
 public class ReadWriteLockExample {
     private static class ReadWriteMap<K, V> {
         private final Map<K, V> map;
@@ -23,6 +20,10 @@ public class ReadWriteLockExample {
         public V put(K key, V value) {
             write.lock();
             try {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                }
                 return map.put(key, value);
             } finally {
                 write.unlock();
@@ -32,10 +33,6 @@ public class ReadWriteLockExample {
         public V get(Object key) {
             read.lock();
             try {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                }
                 return map.get(key);
             } finally {
                 read.unlock();
@@ -43,16 +40,26 @@ public class ReadWriteLockExample {
         }
     }
 
+    public static int fib(int n) {
+        int prev = 0, next = 1, result = 0;
+        for (int i = 0; i < n; i++) {
+            result = prev + next;
+            prev = next;
+            next = result;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
 
-        final ReadWriteMap<String, String> map = new ReadWriteMap<String, String>(new HashMap<String, String>());
+        final ReadWriteMap<Integer, Integer> map = new ReadWriteMap<Integer, Integer>(new HashMap<Integer, Integer>());
 
         class Reader implements Runnable {
             private int i;
 
             @Override
             public void run() {
-                System.out.println(map.get("" + i));
+                System.out.println("Reading: " + i + " : " + map.get(i));
             }
 
             Reader(int i) {
@@ -65,7 +72,9 @@ public class ReadWriteLockExample {
 
             @Override
             public void run() {
-                map.put("" + i, "Value: " + i);
+                int f = fib(i);
+                System.out.println("Writing: " + i + " : " + f);
+                map.put(i, f);
             }
 
             Writer(int i) {
@@ -73,9 +82,6 @@ public class ReadWriteLockExample {
             }
         }
 
-        for (int i = 0; i < 10; i++) {
-            map.put("" + i, "Value: " + i);
-        }
         for (int i = 0; i < 10; i++) {
             new Thread(new Writer(i)).start();
         }
