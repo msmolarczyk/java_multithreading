@@ -20,5 +20,27 @@ public class Api {
                 .thenApplyAsync(i -> i + 123)
                 .thenApplyAsync(i -> Math.E * i);
         System.out.println(future.get());
+        
+        /////////////////
+        
+        CompletableFuture<String> future1 = CompletableFuture.supplyAsync(() -> {
+            return "Combining two CompletableFutures";
+        });
+
+        CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> {
+            return "and getting a new CompletableFuture";
+        });
+
+        CompletableFuture<String> result = future1.thenCombine(future2, (str1, str2) -> str1 + " " + str2);
+        System.out.println("Value- " + result.get());
+        
+        
+        ////////////
+        
+        CompletableFuture<Integer> f4 = CompletableFuture.supplyAsync( () -> 0);
+        f4.thenApplyAsync( x -> x + 1 )
+        .thenApplyAsync( x -> x + 1 )
+        .thenAcceptAsync( x -> System.out.println(x));
+        
     }
 }
