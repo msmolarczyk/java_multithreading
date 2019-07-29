@@ -42,5 +42,6 @@ public class AtomicCounterExample {
         for (int i = 0; i < 1000; i++) {
             service.submit(new Task(i, atomicCounter));
         }
+        service.shutdown();
     }
 }
